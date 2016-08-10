@@ -1,0 +1,14 @@
+{
+  "name": "spring-boot-dojo",
+  "authors": [
+    "Justin Bumpus-Barnett <jumpnett@gmail.com>"
+  ],
+  "description": "Demo project for Spring Boot and Dojo",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "dgrid": "^1.1.0"
+  }
+}
