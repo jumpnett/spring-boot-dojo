@@ -41,6 +41,6 @@
     "commit": "8bcafbd63674a1258d27b0d52f28bcf0d9dc3794"
   },
   "_source": "https://github.com/dojo/dojo.git",
-  "_target": ">=1.8.9",
+  "_target": ">=1.8.1",
   "_originalSource": "dojo"
 }

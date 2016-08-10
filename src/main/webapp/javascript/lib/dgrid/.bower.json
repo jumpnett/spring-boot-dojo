@@ -39,6 +39,5 @@
   },
   "_source": "https://github.com/SitePen/dgrid.git",
   "_target": "^1.1.0",
-  "_originalSource": "dgrid",
-  "_direct": true
+  "_originalSource": "dgrid"
 }
