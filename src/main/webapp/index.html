@@ -3,4 +3,57 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Tutorial: Hello dgrid!</title>
-		<link rel="stylesheet" href="
+		<link rel="stylesheet" href="javascript/lib/dgrid/css/dgrid.css">
+	</head>
+
+	<body>
+		<div id="grid"><div>
+		<script src="javascript/lib/dojo/dojo.js" data-dojo-config="async: true"></script>
+		<script>
+			require([
+				'dgrid/Grid',
+				'dgrid/Keyboard',
+				'dgrid/Selection',
+
+				'dojo/_base/declare',
+				'dojo/query',
+
+				'dojo/domReady!'
+			],
+			function(Grid, Keyboard, Selection, declare, query) {
+				var data = [
+					{ first: 'Bob', last: 'Barker', age: 89 },
+					{ first: 'Vanna', last: 'White', age: 55 },
+					{ first: 'Pat', last: 'Sajak', age: 65 }
+				];
+
+				var CustomGrid = declare([Grid, Keyboard, Selection]);
+
+				var grid = new CustomGrid({
+					columns: {
+						first: 'First Name',
+						last: 'Last Name',
+						age: 'Age'
+					},
+					selectionMode: 'single',
+					cellNavigation: false
+				}, 'grid');
+
+				grid.renderArray(data);
+
+				grid.on('dgrid-select', function(event) {
+					console.log('Row selected: ', event.rows[0].data);
+				});
+
+				grid.on('dgrid-deselect', function(event) {
+					console.log('Row de-selected: ', event.rows[0].data);
+				});
+
+				grid.on('.dgrid-row:click', function(event) {
+					var row = grid.row(event);
+					console.log('Row clicked:', row.id);
+				});
+			});
+		</script>
+	</body>
+</html>
