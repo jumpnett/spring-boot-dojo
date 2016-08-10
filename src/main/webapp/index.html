@@ -4,6 +4,15 @@
 		<meta charset="utf-8">
 		<title>Tutorial: Hello dgrid!</title>
 		<link rel="stylesheet" href="javascript/lib/dgrid/css/dgrid.css">
+		<style type="text/css">
+			.dgrid-no-data,
+			.dgrid-loading {
+				color: #aaa;
+				font-size: 3em;
+				padding: 3em;
+				text-align: center;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -11,7 +20,8 @@
 		<script src="javascript/lib/dojo/dojo.js" data-dojo-config="async: true"></script>
 		<script>
 			require([
-				'dgrid/OnDemandGrid',
+				'dgrid/extensions/Pagination',
+				'dgrid/Grid',
 				'dgrid/Keyboard',
 				'dgrid/Selection',
 
@@ -22,21 +32,24 @@
 
 				'dojo/domReady!'
 			],
-			function(OnDemandGrid, Keyboard, Selection, declare, query, RequestMemory) {
+			function(Pagination, Grid, Keyboard, Selection, declare, query, RequestMemory) {
 
-				var CustomGrid = declare([OnDemandGrid, Keyboard, Selection]);
+				var CustomGrid = declare([Grid, Keyboard, Pagination, Selection]);
 
 				var collection = new RequestMemory({target:'data/hof-batting.json'});
 
 				var grid = new CustomGrid({
 					collection: collection, 
+					className: 'dgrid-autoheight',
 					columns: {
 						first: 'First Name',
 						last: 'Last Name',
 						totalG: 'Games Played'
 					},
 					selectionMode: 'single',
-					cellNavigation: false
+					cellNavigation: false,
+					loadingMessage: 'Doing the thing...',
+					noDataMessage: 'Nothing to see here.'
 				}, 'grid');
 
 				grid.startup();
