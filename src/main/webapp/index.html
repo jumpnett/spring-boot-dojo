@@ -11,35 +11,35 @@
 		<script src="javascript/lib/dojo/dojo.js" data-dojo-config="async: true"></script>
 		<script>
 			require([
-				'dgrid/Grid',
+				'dgrid/OnDemandGrid',
 				'dgrid/Keyboard',
 				'dgrid/Selection',
 
 				'dojo/_base/declare',
 				'dojo/query',
 
+				'dstore/RequestMemory',
+
 				'dojo/domReady!'
 			],
-			function(Grid, Keyboard, Selection, declare, query) {
-				var data = [
-					{ first: 'Bob', last: 'Barker', age: 89 },
-					{ first: 'Vanna', last: 'White', age: 55 },
-					{ first: 'Pat', last: 'Sajak', age: 65 }
-				];
+			function(OnDemandGrid, Keyboard, Selection, declare, query, RequestMemory) {
 
-				var CustomGrid = declare([Grid, Keyboard, Selection]);
+				var CustomGrid = declare([OnDemandGrid, Keyboard, Selection]);
+
+				var collection = new RequestMemory({target:'data/hof-batting.json'});
 
 				var grid = new CustomGrid({
+					collection: collection, 
 					columns: {
 						first: 'First Name',
 						last: 'Last Name',
-						age: 'Age'
+						totalG: 'Games Played'
 					},
 					selectionMode: 'single',
 					cellNavigation: false
 				}, 'grid');
 
-				grid.renderArray(data);
+				grid.startup();
 
 				grid.on('dgrid-select', function(event) {
 					console.log('Row selected: ', event.rows[0].data);
