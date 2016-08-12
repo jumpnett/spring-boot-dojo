@@ -28,15 +28,15 @@
 				'dojo/_base/declare',
 				'dojo/query',
 
-				'dstore/RequestMemory',
+				'dstore/Request',
 
 				'dojo/domReady!'
 			],
-			function(Pagination, Grid, Keyboard, Selection, declare, query, RequestMemory) {
+			function(Pagination, Grid, Keyboard, Selection, declare, query, Request) {
 
 				var CustomGrid = declare([Grid, Keyboard, Pagination, Selection]);
 
-				var collection = new RequestMemory({target:'api/batting'});
+				var collection = new Request({target:'api/batting', useRangeHeaders: true});
 
 				var grid = new CustomGrid({
 					collection: collection, 
