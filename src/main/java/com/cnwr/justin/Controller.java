@@ -2,6 +2,7 @@ package com.cnwr.justin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
 
 	private final List<Batting> battings;
+	private final AtomicLong counter = new AtomicLong();
 
 	public Controller() {
 		this.battings = new ArrayList<Batting>();
@@ -22,8 +24,8 @@ public class Controller {
 		battings.add(new Batting("Pete", "Alexander", 703));
 		battings.add(new Batting("Ernie", "Banks", 2528));
 */
-		for (int i=0; i<1000; i++) {
-			battings.add(new Batting("First"+i, "Last"+i, i));
+		for (int i=0; i<1000000; i++) {
+			battings.add(new Batting(counter.incrementAndGet(), "First"+i, "Last"+i, i));
 		}
 	}
 

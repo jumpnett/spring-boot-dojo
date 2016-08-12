@@ -19,24 +19,26 @@
 		<div id="grid"><div>
 		<script src="javascript/lib/dojo/dojo.js" data-dojo-config="async: true"></script>
 		<script>
-			require([
-				'dgrid/extensions/Pagination',
-				'dgrid/Grid',
+/*			require([
+				'dgrid/OnDemandGrid',
 				'dgrid/Keyboard',
 				'dgrid/Selection',
 
 				'dojo/_base/declare',
 				'dojo/query',
 
-				'dstore/Request',
+				'dstore/Rest',
+				'dstore/Cache',
 
 				'dojo/domReady!'
 			],
-			function(Pagination, Grid, Keyboard, Selection, declare, query, Request) {
+			function(Grid, Keyboard, Selection, declare, query, Rest, Cache) {
 
-				var CustomGrid = declare([Grid, Keyboard, Pagination, Selection]);
+				var CustomGrid = declare([Grid, Keyboard, Selection]);
+				
+				var CustomStore = declare([Rest, Cache]);
 
-				var collection = new Request({target:'api/batting', useRangeHeaders: true});
+				var collection = new CustomStore({target:'api/batting', useRangeHeaders: true});
 
 				var grid = new CustomGrid({
 					collection: collection, 
@@ -52,7 +54,7 @@
 					noDataMessage: 'Nothing to see here.'
 				}, 'grid');
 
-				grid.startup();
+//				grid.startup();
 
 				grid.on('dgrid-select', function(event) {
 					console.log('Row selected: ', event.rows[0].data);
@@ -67,6 +69,56 @@
 					console.log('Row clicked:', row.id);
 				});
 			});
+*/
+			require([
+				"dojo/_base/lang",
+				"dgrid/List",
+				"dgrid/OnDemandGrid",
+				"dgrid/Selection",
+				"dgrid/Editor",
+				"dgrid/Keyboard",
+				"dgrid/Tree",
+				"dojo/_base/declare",
+				"dstore/Rest",
+				"dstore/Trackable",
+				"dstore/Cache",
+				"dstore/Tree",
+				"dojo/domReady!"
+			],
+			function(lang, List, Grid, Selection, Editor, Keyboard, Tree, declare, Rest, Trackable, Cache, TreeStore) {
+
+				var CustomGrid = declare([Grid, Selection, Keyboard, Editor, Tree]);
+
+				function createStore(config) {
+					var store = new declare([Rest, Trackable, Cache, TreeStore])(lang.mixin({
+						target:'api/batting',
+						put: function(object) {
+							return object;
+						}
+					}, config));
+
+					store.getRootCollection = function() {
+						return this.root.filter({parent: undefined});
+					};
+
+					return store;
+				}
+
+				function getColumns() {
+					return {
+						first: 'First Name',
+						last: 'Last Name',
+						totalG: 'Games Played'
+					};
+				}
+
+				window.grid = new CustomGrid({
+					collection: createStore({useRangeHeaders:true}).getRootCollection(),
+					sort: "id",
+					getBeforePut:false,
+					columns: getColumns()
+				}, "grid");
+			});			
 		</script>
 	</body>
 </html>
